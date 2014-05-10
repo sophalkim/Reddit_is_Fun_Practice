@@ -1,11 +1,20 @@
 package ssk.project.Practice.common.tasks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 
 import ssk.project.Practice.common.Common;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.andrewshu.android.reddit.common.Constants;
@@ -64,7 +73,25 @@ public class SaveTask extends AsyncTask<Void, Void, Boolean> {
 			return false;
 		}
 		
+		if (mSettings.getModhash() == null) {
+			String modhash = Common.doUpdateModhash(mClient);
+			if (modhash == null) {
+				Common.doLogout(mSettings, mClient, mContext);
+				if (Constants.LOGGING) Log.e(TAG, "updating save status failed because doUpdateModhash() failed");
+				return false;
+			}
+			mSettings.setModhash(modhash);
+		}
 		
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("id", mTargetThreadInfo.getName()));
+		nvps.add(new BasicNameValuePair("uh", mSettings.getModhash().toString()));
+		
+		try {
+			HttpPost request = new HttpPost(mUrl);
+			request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			request.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+		}
 		return false;
 	}
 
