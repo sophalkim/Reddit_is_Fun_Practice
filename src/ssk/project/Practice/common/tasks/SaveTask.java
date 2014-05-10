@@ -1,9 +1,9 @@
 package ssk.project.Practice.common.tasks;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 
 import ssk.project.Practice.common.Common;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -56,6 +56,14 @@ public class SaveTask extends AsyncTask<Void, Void, Boolean> {
 	
 	@Override
 	protected Boolean doInBackground(Void... v) {
+		String status = "";
+		HttpEntity entity = null;
+		
+		if (!mSettings.isLoggedIn()) {
+			mUserError = "You must be logged in to save";
+			return false;
+		}
+		
 		
 		return false;
 	}
