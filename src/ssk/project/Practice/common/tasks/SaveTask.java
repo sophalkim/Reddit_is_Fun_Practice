@@ -1,9 +1,13 @@
 package ssk.project.Practice.common.tasks;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpException;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -12,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 import ssk.project.Practice.common.Common;
+import ssk.project.Practice.util.StringUtils;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -91,8 +96,49 @@ public class SaveTask extends AsyncTask<Void, Void, Boolean> {
 			HttpPost request = new HttpPost(mUrl);
 			request.setHeader("Content-Type", "application/x-www-form-urlencoded");
 			request.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+			
+			HttpResponse response = mClient.execute(request);
+			status = response.getStatusLine().toString();
+			
+			if (!status.contains("OK")) {
+				mUserError = mUrl;
+				throw new HttpException(mUrl);
+			}
+			
+			entity = response.getEntity();
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(entity.getContent()));
+			String line = in.readLine();
+			in.close();
+			if (StringUtils.isEmpty(line)) {
+				mUserError = "Connection error when voting. Try again.";
+				throw new HttpException("No content returned from save POST");
+			}
+			if (line.contains("WRONG_PASSWORD")) {
+				mUserError = "Wrong password";
+				throw new Exception("Wrong password.");
+			}
+			if (line.contains("USER_REQUIRED")) {
+				throw new Exception("User required. Huh?");
+			}
+		} catch (Exception e) {
+			if (entity != null) {
+				try {
+					entity.consumeContent();
+				} catch (Exception e2) {
+					if (Constants.LOGGING) Log.e(TAG, "entity.consumeContent()", e2);
+				}
+			}
+			if (Constants.LOGGING) Log.e(TAG, "SaveTask", e);
 		}
 		return false;
+	}
+	
+	@Override
+	public void onPostExecute(Boolean success) {
+		if (!success) {
+			Common.showErrorToast(mUserError, Toast.LENGTH_LONG, mContext);
+		}
 	}
 
 	
