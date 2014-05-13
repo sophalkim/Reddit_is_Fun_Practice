@@ -33,4 +33,18 @@ public class Constants {
 	public static final long DEFAULT_FRESH_DURATION = 18000000;
 	public static final long DEFAULT_FRESH_SUBREDDIT_LIST_DURATION = 86400000;
 	
+	public static final int ACTIVITY_PICK_SUBREDDIT = 0;
+	public static final int ACTIVITY_SUBMIT_LINK = 1;
+	
+	public static final int NOTIFICATION_HAVE_MAIL = 0;
+	
+	public static final int SERVICE_ENVELOPE = 0;
+	
+	public static final String EXTRA_HIDE_FAKE_SUBREDDITS_STRING = "hideFakeSubreddits";
+	public static final String EXTRA_ID = "id";
+	public static final String EXTRA_COMMENT_CONTEXT = "jumpToComment";
+	public static final String EXTRA_MORE_CHILDREN_ID = "moreChildrenId";
+	public static final String EXTRA_NUM_COMMENTS = "num_comments";
+	public static final String EXTRA_SUBREDDIT = "subreddit";
+	
 }
