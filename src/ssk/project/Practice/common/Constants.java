@@ -19,5 +19,5 @@ public class Constants {
 	public static final String LAST_MAIL_CHECK_TIME_MILLIS_KEY = "LAST_MAIL_CHECK_TIME_MILLIS_KEY";
 	
 	public static final String COMMENT_PATH_PATTERN_STRING = "(?:/r/([^/]+)/comments|/comments|/tb)/([^/]+)(?:/?$|/[^/]+/([a-zA-Z0-9]+)?)?";
-	
+	public static final String REDDIT_PATH_PATTERN_STRING = "(?:/r/([^/]+))?/?$";
 }
