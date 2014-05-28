@@ -6,6 +6,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
+import ssk.project.Practice.util.StringUtils;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -138,6 +140,20 @@ public class RedditSettings {
 				if (Constants.LOGGING) Log.e(TAG, "CookieSyncManager.getInstsance().sync()", ex);
 			}
 		}
+		
+		String homepage = sessionPrefs.getString(Constants.PREF_HOMEPAGE, Constants.FRONTPAGE_STRING).trim();
+		if (StringUtils.isEmpty(homepage)) {
+			setHomepage(Constants.FRONTPAGE_STRING);
+		} else {
+			setHomepage(homepage);
+		}
+		setUseExternalBrowser(sessionPrefs.getBoolean(Constants.PREF_USE_EXTERNAL_BROWSER, false));
+		setConfirmQuitOrLogout(sessionPrefs.getBoolean(Constants.PREF_CONFIRM_QUIT, true));
+		setSaveHistory(sessionPrefs.getBoolean(Constants.PREF_SAVE_HISTORY, true));
+		setAlwaysShowNextPrevious(sessionPrefs.getBoolean(Constants.PREF_ALWAYS_SHOW_NEXT_PREVIOUS, true));
+		setCommentsSortByUrl(sessionPrefs.getString(Constants.PREF_COMMENTS_SORT_BY_URL, Constants.CommentsSort.SORT_BY_BEST_URL));
+		
+		
 	}
 
 	public String getUsername() {
