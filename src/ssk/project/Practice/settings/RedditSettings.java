@@ -31,6 +31,33 @@ public class RedditSettings {
 	private String mailNotificationStyle = Constants.PREF_MAIL_NOTIFICATION_STYLE_DEFAULT;
 	private String mailNotificationService = Constants.PREF_MAIL_NOTIFICATION_SERVICE_OFF;
 	
-	
+	public static class Rotation {
+		
+		public static int valueOf(String valueString) {
+			if (Constants.PREF_ROTATION_UNSPECIFIED.equals(valueString)) {
+				return -1;
+			}
+			if (Constants.PREF_ROTATION_PORTRAIT.equals(valueString)) {
+				return 1;
+			}
+			if (Constants.PREF_ROTATION_LANDSCAPE.equals(valueString)) {
+				return 0;
+			}
+			return -1;
+		}
+		
+		public static String toString(int value) {
+			switch (value) {
+			case -1:
+				return Constants.PREF_ROTATION_UNSPECIFIED;
+			case 1:
+				return Constants.PREF_ROTATION_PORTRAIT;
+			case 0:
+				return Constants.PREF_ROTATION_LANDSCAPE;
+			default:
+				return Constants.PREF_ROTATION_UNSPECIFIED;
+			}
+		}
+	}
 	
 }
