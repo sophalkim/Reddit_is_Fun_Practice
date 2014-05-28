@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 
 import com.andrewshu.android.reddit.R;
 import com.andrewshu.android.reddit.common.Constants;
+import com.andrewshu.android.reddit.common.util.Util;
 
 public class RedditSettings {
 
@@ -89,6 +90,20 @@ public class RedditSettings {
 		editor.putBoolean(Constants.PREF_SAVE_HISTORY, saveHistory);
 		editor.putBoolean(Constants.PREF_ALWAYS_SHOW_NEXT_PREVIOUS, alwaysShowNextPrevious);
 		editor.putString(Constants.PREF_COMMENTS_SORT_BY_URL, commentsSortByUrl);
+		
+		String[] themeTextSize = Util.getPrefsFromThemeResource(theme);
+		editor.putString(Constants.PREF_THEME, themeTextSize[0]);
+		editor.putString(Constants.PREF_TEXT_SIZE, themeTextSize[1]);
+		
+		editor.putBoolean(Constants.PREF_SHOW_COMMENT_GUIDE_LINES, showCommentGuideLines);
+		editor.putString(Constants.PREF_ROTATION, RedditSettings.Rotation.toString(rotation));
+		editor.putBoolean(Constants.PREF_LOAD_THUMBNAILS, loadThumbnails);
+		editor.putBoolean(Constants.PREF_LOAD_THUMBNAILS_ONLY_WIFI, loadThumbnailsOnlyWifi);
+		
+		editor.putString(Constants.PREF_MAIL_NOTIFICATION_STYLE, mailNotificationStyle);
+		editor.putString(Constants.PREF_MAIL_NOTIFICATION_SERVICE, mailNotificationService);
+		
+		editor.commit();
 	}
 	
 }
