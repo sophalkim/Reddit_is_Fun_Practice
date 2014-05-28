@@ -1,13 +1,20 @@
 package ssk.project.Practice.settings;
 
+import java.util.Date;
+
+import org.apache.http.client.HttpClient;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.webkit.CookieSyncManager;
 
 import com.andrewshu.android.reddit.R;
 import com.andrewshu.android.reddit.common.Constants;
+import com.andrewshu.android.reddit.common.RedditIsFunHttpClientFactory;
 import com.andrewshu.android.reddit.common.util.Util;
 
 public class RedditSettings {
@@ -105,5 +112,174 @@ public class RedditSettings {
 		
 		editor.commit();
 	}
+	
+	public void loadRedditPreferences(Context context, HttpClient client) {
+		SharedPreferences sessionPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+		setUsername(sessionPrefs.getString("username", null));
+		setModhash(sessionPrefs.getString("modhash", null));
+		String cookieValue = sessionPrefs.getString("reddit_sessionValue", null);
+		String cookieDomain = sessionPrefs.getString("reddit_sessionDomain", null);
+		String cookiePath = sessionPrefs.getString("reddit_sessionPath", null);
+		long cookieExpiryDate = sessionPrefs.getLong("reddit_sessionExpiryDate", -1);
+		if (cookieValue != null) {
+			BasicClientCookie redditSessionCookie = new BasicClientCookie("reddit_session", cookieValue);
+			redditSessionCookie.setDomain(cookieDomain);
+			redditSessionCookie.setPath(cookiePath);
+			if (cookieExpiryDate != -1) {
+				redditSessionCookie.setExpiryDate(new Date(cookieExpiryDate));
+			} else {
+				redditSessionCookie.setExpiryDate(null);
+			}
+			setRedditSessionCookie(redditSessionCookie);
+			RedditIsFunHttpClientFactory.getCookieStore().addCookie(redditSessionCookie);
+			try {
+				CookieSyncManager.getInstance().sync();
+			} catch (IllegalStateException ex) {
+				if (Constants.LOGGING) Log.e(TAG, "CookieSyncManager.getInstsance().sync()", ex);
+			}
+		}
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Cookie getRedditSessionCookie() {
+		return redditSessionCookie;
+	}
+
+	public void setRedditSessionCookie(Cookie redditSessionCookie) {
+		this.redditSessionCookie = redditSessionCookie;
+	}
+
+	public String getModhash() {
+		return modhash;
+	}
+
+	public void setModhash(String modhash) {
+		this.modhash = modhash;
+	}
+
+	public String getHomepage() {
+		return homepage;
+	}
+
+	public void setHomepage(String homepage) {
+		this.homepage = homepage;
+	}
+
+	public boolean isUseExternalBrowser() {
+		return useExternalBrowser;
+	}
+
+	public void setUseExternalBrowser(boolean useExternalBrowser) {
+		this.useExternalBrowser = useExternalBrowser;
+	}
+
+	public boolean isShowCommentGuideLines() {
+		return showCommentGuideLines;
+	}
+
+	public void setShowCommentGuideLines(boolean showCommentGuideLines) {
+		this.showCommentGuideLines = showCommentGuideLines;
+	}
+
+	public boolean isConfirmQuitOrLogout() {
+		return confirmQuitOrLogout;
+	}
+
+	public void setConfirmQuitOrLogout(boolean confirmQuitOrLogout) {
+		this.confirmQuitOrLogout = confirmQuitOrLogout;
+	}
+
+	public boolean isSaveHistory() {
+		return saveHistory;
+	}
+
+	public void setSaveHistory(boolean saveHistory) {
+		this.saveHistory = saveHistory;
+	}
+
+	public boolean isAlwaysShowNextPrevious() {
+		return alwaysShowNextPrevious;
+	}
+
+	public void setAlwaysShowNextPrevious(boolean alwaysShowNextPrevious) {
+		this.alwaysShowNextPrevious = alwaysShowNextPrevious;
+	}
+
+	public int getThreadDownloadLimit() {
+		return threadDownloadLimit;
+	}
+
+	public void setThreadDownloadLimit(int threadDownloadLimit) {
+		this.threadDownloadLimit = threadDownloadLimit;
+	}
+
+	public String getCommentsSortByUrl() {
+		return commentsSortByUrl;
+	}
+
+	public void setCommentsSortByUrl(String commentsSortByUrl) {
+		this.commentsSortByUrl = commentsSortByUrl;
+	}
+
+	public int getTheme() {
+		return theme;
+	}
+
+	public void setTheme(int theme) {
+		this.theme = theme;
+	}
+
+	public int getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
+	}
+
+	public boolean isLoadThumbnails() {
+		return loadThumbnails;
+	}
+
+	public void setLoadThumbnails(boolean loadThumbnails) {
+		this.loadThumbnails = loadThumbnails;
+	}
+
+	public boolean isLoadThumbnailsOnlyWifi() {
+		return loadThumbnailsOnlyWifi;
+	}
+
+	public void setLoadThumbnailsOnlyWifi(boolean loadThumbnailsOnlyWifi) {
+		this.loadThumbnailsOnlyWifi = loadThumbnailsOnlyWifi;
+	}
+
+	public String getMailNotificationStyle() {
+		return mailNotificationStyle;
+	}
+
+	public void setMailNotificationStyle(String mailNotificationStyle) {
+		this.mailNotificationStyle = mailNotificationStyle;
+	}
+
+	public String getMailNotificationService() {
+		return mailNotificationService;
+	}
+
+	public void setMailNotificationService(String mailNotificationService) {
+		this.mailNotificationService = mailNotificationService;
+	}
+
+	public static String getTag() {
+		return TAG;
+	}
+	
+	
 	
 }
