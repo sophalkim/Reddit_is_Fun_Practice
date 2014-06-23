@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import ssk.project.Practice.settings.RedditSettings;
 import android.app.Activity;
 import android.net.Uri;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -36,6 +37,16 @@ public class BrowserActivity extends Activity {
 			mWebSettings_setLoadWithOverviewMode = WebSettings.class.getMethod("setLoadWithOverviewMode", new Class[] { Boolean.TYPE });
 		} catch (NoSuchMethodException nsme) {
 			
+		}
+	}
+	
+	private void trySetDomStorageEnabled(WebSettings settings) {
+		if (mWebSettings_setDomStorageEnabled != null) {
+			try {
+				mWebSettings_setDomStorageEnabled.invoke(settings, true);
+			} catch (Exception ex) {
+				Log.e(TAG, "trySetDomStorageEnabled", ex);
+			}
 		}
 	}
 }
