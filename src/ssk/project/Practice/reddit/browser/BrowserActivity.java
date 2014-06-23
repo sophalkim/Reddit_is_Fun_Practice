@@ -49,4 +49,16 @@ public class BrowserActivity extends Activity {
 			}
 		}
 	}
+	
+	private void trySetLoadWithOverviewMode(WebSettings settings) {
+		if (mWebSettings_setLoadWithOverviewMode != null) {
+			try {
+				mWebSettings_setLoadWithOverviewMode.invoke(settings, true);
+				return;
+			} catch (Exception ex){
+				Log.e(TAG, "trySetLoadWithOverviewMode", ex);
+			}
+		}
+		webview.setInitialScale(50);
+	}
 }
