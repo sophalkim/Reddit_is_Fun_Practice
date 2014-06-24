@@ -6,6 +6,8 @@ import ssk.project.Practice.settings.RedditSettings;
 import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -60,5 +62,31 @@ public class BrowserActivity extends Activity {
 			}
 		}
 		webview.setInitialScale(50);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		CookieSyncManager.getInstance().startSync();
+		mSettings.loadRedditPreferences(this, null);
+		setRequestedOrientation(mSettings.getRotation());
+		int previousTheme = mSettings.getTheme();
+		if (mSettings.getTheme() != previousTheme) {
+			resetUI();
+		}
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		CookieSyncManager.getInstance().stopSync();
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		webview.setVisibility(View.GONE);
+		webview.destroy();
+		webview = null;
 	}
 }
