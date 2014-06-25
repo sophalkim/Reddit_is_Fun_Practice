@@ -3,13 +3,19 @@ package ssk.project.Practice.reddit.browser;
 import java.lang.reflect.Method;
 
 import ssk.project.Practice.settings.RedditSettings;
+import ssk.project.Practice.util.Util;
 import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+
+import com.andrewshu.android.reddit.R;
 
 public class BrowserActivity extends Activity {
 
@@ -88,5 +94,31 @@ public class BrowserActivity extends Activity {
 		webview.setVisibility(View.GONE);
 		webview.destroy();
 		webview = null;
+	}
+	
+	public void resetUI() {
+		setTheme(mSettings.getTheme());
+		setContentView(R.layout.browser);
+		webview = (WebViewFixed) findViewById(R.id.webview);
+		if (Util.isLightTheme(mSettings.getTheme())) {
+			webview.setBackgroundResource(R.color.white);
+		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK) && webview.canGoBack()) {
+			webview.goBack();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.browser, menu);
+		return  true;
 	}
 }
