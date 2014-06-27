@@ -2,20 +2,26 @@ package ssk.project.Practice.reddit.browser;
 
 import java.lang.reflect.Method;
 
+import ssk.project.Practice.common.Common;
 import ssk.project.Practice.settings.RedditSettings;
 import ssk.project.Practice.util.Util;
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.andrewshu.android.reddit.R;
+import com.andrewshu.android.reddit.comments.CommentsListActivity;
+import com.andrewshu.android.reddit.common.Constants;
 
 public class BrowserActivity extends Activity {
 
@@ -120,5 +126,51 @@ public class BrowserActivity extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.browser, menu);
 		return  true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		if (mThreadUrl == null) {
+			menu.findItem(R.id.view_comments_menu_id).setVisible(false);
+		} else {
+			menu.findItem(R.id.view_comments_menu_id).setVisible(true);
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.open_browser_menu_id:
+				if (mUri == null) break;
+				Common.launchBrowser(this, mUri.toString(), null, false, true, true, false);
+				break;
+			
+			case R.id.close_browser_menu_id:
+				finish();
+				break;
+				
+			case R.id.view_comments_menu_id:
+				if (mThreadUrl == null) break;
+				Intent intent = new Intent(this, CommentsListActivity.class);
+				intent.setData(Uri.parse(mThreadUrl));
+				intent.putExtra(Constants.EXTRA_NUM_COMMENTS, Constants.DEFAULT_COMMENT_DOWNLOAD_LIMIT);
+				startActivity(intent);
+				break;
+				
+			case android.R.id.home:
+				Common.goHome(this);
+				break;
+			
+			default:
+				throw new IllegalArgumentException("Unexpected action value " + item.getItemId());
+		}
+		return true;
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		webview.saveState(outState);
 	}
 }
