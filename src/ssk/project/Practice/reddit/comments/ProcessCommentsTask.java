@@ -32,7 +32,9 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		mActivity = commentsListActivity;
 	}
 	
-	
+	public void addDeferred(DeferredCommentProcessing deferredCommentProcessing) {
+		mDeferredProcessingList.add(deferredCommentProcessing);
+	}
 	
 	
 	
