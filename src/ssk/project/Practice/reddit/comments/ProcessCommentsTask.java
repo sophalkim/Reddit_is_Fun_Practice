@@ -17,7 +17,7 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 	
 	private final LinkedList<DeferredCommentProcessing> mDeferredProcessingList = new LinkedList<DeferredCommentProcessing>();
 	private final LinkedList<DeferredCommentProcessing> mDeferredProcessingHighPriorityList = new LinkedList<DeferredCommentProcessing>();
-	private final LinkedList<DeferredCommentProcessing> mDerredProcessingLowPriorityList = new LinkedList<DeferredCommentProcessing>();
+	private final LinkedList<DeferredCommentProcessing> mDeferredProcessingLowPriorityList = new LinkedList<DeferredCommentProcessing>();
 	
 	public static class DeferredCommentProcessing {
 		public int commentIndex;
@@ -34,6 +34,14 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 	
 	public void addDeferred(DeferredCommentProcessing deferredCommentProcessing) {
 		mDeferredProcessingList.add(deferredCommentProcessing);
+	}
+	
+	public void addDeferredHighPriority(DeferredCommentProcessing deferredCommentProcessing) {
+		mDeferredProcessingHighPriorityList.add(deferredCommentProcessing);
+	}
+	
+	public void addDeferredLowPriority(DeferredCommentProcessing deferredCommentProcessing) {
+		mDeferredProcessingLowPriorityList.add(deferredCommentProcessing);
 	}
 	
 	
