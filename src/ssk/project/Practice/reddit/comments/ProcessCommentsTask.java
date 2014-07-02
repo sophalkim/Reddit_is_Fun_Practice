@@ -44,6 +44,12 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		mDeferredProcessingLowPriorityList.add(deferredCommentProcessing);
 	}
 	
+	public void moveHighPriorityOverflowToLowPriority(int highPriorityMaxSize) {
+		if (mDeferredProcessingHighPriorityList.size() > highPriorityMaxSize) {
+			DeferredCommentProcessing overflow = mDeferredProcessingHighPriorityList.removeFirst();
+			mDeferredProcessingLowPriorityList.add(overflow);
+		}
+	}
 	
 	
 	@Override
