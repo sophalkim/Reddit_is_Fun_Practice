@@ -51,6 +51,11 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		}
 	}
 	
+	public void mergeHighPriorityListToMainList() {
+		mDeferredProcessingList.addAll(0, mDeferredProcessingHighPriorityList);
+		mDeferredProcessingHighPriorityList.clear();
+	}
+	
 	
 	@Override
 	protected Void doInBackground(Void... params) {
