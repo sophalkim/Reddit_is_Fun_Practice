@@ -56,9 +56,19 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		mDeferredProcessingHighPriorityList.clear();
 	}
 	
+	public void mergeLowPriorityListToMainList() {
+		mDeferredProcessingList.addAll(0, mDeferredProcessingLowPriorityList);
+		mDeferredProcessingLowPriorityList.clear();
+	}
+	
 	
 	@Override
-	protected Void doInBackground(Void... params) {
+	protected Void doInBackground(Void... v) {
+		for (final DeferredCommentProcessing deferredCommentProcessing : mDeferredProcessingList) {
+			processCommentSlowSteps(deferredCommentProcessing.comment);
+			publishProgress(deferredCommentProcessing.commentIndex);
+		}
+		cleanupQueues();
 		return null;
 	}
 
