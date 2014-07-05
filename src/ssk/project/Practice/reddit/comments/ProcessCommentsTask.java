@@ -71,6 +71,19 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		cleanupQueues();
 		return null;
 	}
+	
+	private void cleanupQueues() {
+		mDeferredProcessingList.clear();
+		mDeferredProcessingHighPriorityList.clear();
+		mDeferredProcessingLowPriorityList.clear();
+	}
+	
+	@Override
+	public void onProgressUpdate(Integer... commentsToShow) {
+		for (Integer commentIndex : commentsToShow) {
+			refreshDeferredCommentIfVisibleUI(commentIndex);
+		}
+	}
 
 	
 }
