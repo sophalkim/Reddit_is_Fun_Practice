@@ -84,6 +84,14 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 			refreshDeferredCommentIfVisibleUI(commentIndex);
 		}
 	}
+	
+	private void processCommentSlowSteps(ThingInfo comment) {
+		if (comment.getBody_html() != null) {
+			CharSequence spanned = createSpanned(comment.getBody_html());
+			comment.setSpannedBody(spanned);
+		}
+		markdown.getURLs(comment.getBody(), comment.getUrls());
+	}
 
 	
 }
