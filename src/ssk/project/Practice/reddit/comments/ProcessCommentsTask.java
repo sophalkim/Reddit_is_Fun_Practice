@@ -2,9 +2,14 @@ package ssk.project.Practice.reddit.comments;
 
 import java.util.LinkedList;
 
+import ssk.project.Practice.util.Util;
 import android.os.AsyncTask;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 
 import com.andrewshu.android.reddit.comments.CommentsListActivity;
+import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.markdown.Markdown;
 import com.andrewshu.android.reddit.things.ThingInfo;
 
@@ -91,6 +96,23 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 			comment.setSpannedBody(spanned);
 		}
 		markdown.getURLs(comment.getBody(), comment.getUrls());
+	}
+	
+	private CharSequence createSpanned(String bodyHtml) {
+		try {
+			bodyHtml = Html.fromHtml(bodyHtml).toString();
+			bodyHtml = Util.convertHtmlTags(bodyHtml);
+			
+			Spanned body = Html.fromHtml(bodyHtml);
+			if (body.length() > 2) {
+				return body.subSequence(0, body.length() - 2);
+			} else {
+				return "";
+			}
+		} catch (Exception e) {
+			if (Constants.LOGGING) Log.e(TAG, "created Spanned failed", e);
+			return null;
+		}
 	}
 
 	
