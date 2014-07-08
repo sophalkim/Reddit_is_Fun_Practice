@@ -115,5 +115,8 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		}
 	}
 
-	
+	private void refreshDeferredCommentIfVisibleUI(final int commentIndex) {
+		if (isPositionVisibleUI(commentIndex))
+			refreshCommentUI(commentIndex);
+	}
 }
