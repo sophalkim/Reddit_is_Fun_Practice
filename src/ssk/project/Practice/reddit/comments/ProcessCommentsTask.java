@@ -119,4 +119,11 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		if (isPositionVisibleUI(commentIndex))
 			refreshCommentUI(commentIndex);
 	}
+	
+	private void refreshCommentUI(int commentIndex) {
+		refreshCommentBodyTextViewUI(commentIndex);
+		refreshCommentSubmitterUI(commentIndex);
+	}
+	
+	
 }
