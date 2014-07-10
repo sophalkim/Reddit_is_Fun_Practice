@@ -3,10 +3,12 @@ package ssk.project.Practice.reddit.comments;
 import java.util.LinkedList;
 
 import ssk.project.Practice.util.Util;
+import com.andrewshu.android.reddit.R;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.View;
 
 import com.andrewshu.android.reddit.comments.CommentsListActivity;
 import com.andrewshu.android.reddit.common.Constants;
@@ -125,5 +127,12 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		refreshCommentSubmitterUI(commentIndex);
 	}
 	
-	
+	private void refreshCommentBodyTextViewUI(int commentIndex) {
+		int positionOnScreen = commentIndex - mActivity.getListView().getFirstVisiblePosition();
+		View v = mActivity.getListView().getChildAt(positionOnScreen);
+		if (v != null) {
+			View bodyTextView = v.findViewById(R.id.body);
+			
+		}
+	}
 }
