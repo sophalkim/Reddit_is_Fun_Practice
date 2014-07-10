@@ -138,4 +138,20 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 			}
 		}
 	}
+	
+	private void refreshCommentSubmitterUI(int commentIndex) {
+		int positionOnScreen = commentIndex - mActivity.getListView().getFirstVisiblePosition();
+		View v = mActivity.getListView().getChildAt(positionOnScreen);
+		if (v != null) {
+			View submitterView = v.findViewById(R.id.submitter);
+			if (submitterView != null) {
+				ThingInfo comment = mActivity.mCommentsList.get(commentIndex);
+				if (comment.getSSAuthor() != null) {
+					((TextView) submitterView).setText(comment.getSSAuthor());
+				} else {
+					((TextView) submitterView).setText(comment.getAuthor());
+				}
+			}
+		}
+	}
 }
