@@ -120,7 +120,7 @@ public class CommentsListActivity extends ListActivity
 
     /** Custom list adapter that fits our threads data into the list. */
     CommentsListAdapter mCommentsAdapter = null;
-    ArrayList<ThingInfo> mCommentsList = null;
+    public ArrayList<ThingInfo> mCommentsList = null;
     
     private final HttpClient mClient = RedditIsFunHttpClientFactory.getGzipHttpClient();
     

@@ -154,4 +154,14 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 			}
 		}
 	}
+	
+	boolean isPositionVisibleUI(int position) {
+		return position <= mActivity.getListView().getLastVisiblePosition() &&
+				position <= mActivity.getListView().getFirstVisiblePosition();
+	}
+	
+	
+	
+	
+	
 }
