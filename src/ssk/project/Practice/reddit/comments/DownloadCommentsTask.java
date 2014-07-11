@@ -61,6 +61,8 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		mProcessCommentsTask = new ProcessCommentsTask(activity);
 	}
 	
+	public DownloadCommentsTask prepareLoadMoreComments()
+	
 	
 	
 	@Override
