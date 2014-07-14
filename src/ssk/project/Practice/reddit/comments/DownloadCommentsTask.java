@@ -68,6 +68,12 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		return this;
 	}
 	
+	public DownloadCommentsTask prepareLoadAndJumpToComment(String commentId, int context) {
+		mJumpToCommentId = commentId;
+		mJumpToCommentContext = context;
+		return this;
+	}
+	
 	
 	
 	@Override
