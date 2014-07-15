@@ -4,14 +4,17 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import ssk.project.Practice.common.Common;
 import ssk.project.Practice.settings.RedditSettings;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.andrewshu.android.reddit.comments.CommentsListActivity;
+import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.markdown.Markdown;
 import com.andrewshu.android.reddit.things.ThingInfo;
 import com.andrewshu.android.reddit.threads.ShowThumbnailsTask;
@@ -74,10 +77,15 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		return this;
 	}
 	
-	
-	
 	@Override
-	protected Boolean doInBackground(Integer... params) {
+	protected Boolean doInBackground(Integer... maxComments) {
+		HttpEntity entity = null;
+		try {
+			StringBuilder sb = new StringBuilder(Constants.REDDIT_BASE_URL);
+			
+		} catch (Exception e) {
+			if (Constants.LOGGING) Log.e(TAG, "DownloadCommentTask", e);
+		}
 		return null;
 	}
 
