@@ -82,6 +82,9 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		HttpEntity entity = null;
 		try {
 			StringBuilder sb = new StringBuilder(Constants.REDDIT_BASE_URL);
+			if (mSubreddit != null) {
+				sb.append("/r/").append(mSubreddit.trim());
+			}
 			
 		} catch (Exception e) {
 			if (Constants.LOGGING) Log.e(TAG, "DownloadCommentTask", e);
