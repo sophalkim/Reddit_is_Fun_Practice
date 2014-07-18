@@ -85,6 +85,10 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			if (mSubreddit != null) {
 				sb.append("/r/").append(mSubreddit.trim());
 			}
+			sb.append("/comments/")
+				.append(mThreadId)
+				.append("/z/").append(mMoreChildrenId).append("/.json?")
+				.append(mSettings.getCommentsSortByUrl()).append("&");
 			
 		} catch (Exception e) {
 			if (Constants.LOGGING) Log.e(TAG, "DownloadCommentTask", e);
