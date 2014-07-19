@@ -2,12 +2,14 @@ package ssk.project.Practice.reddit.comments;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.InputStream;
 import java.util.LinkedList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import ssk.project.Practice.common.CacheInfo;
 import ssk.project.Practice.common.Common;
 import ssk.project.Practice.settings.RedditSettings;
 import android.os.AsyncTask;
@@ -89,6 +91,26 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 				.append(mThreadId)
 				.append("/z/").append(mMoreChildrenId).append("/.json?")
 				.append(mSettings.getCommentsSortByUrl()).append("&");
+			if (mJumpToCommentContext != 0) {
+				sb.append("context=").append(mJumpToCommentContext).append("&");
+			}
+			String url = sb.toString();
+			InputStream in = null;
+			boolean currentlyUsingCache = false;
+			
+			if (Constants.USE_COMMENTS_CACHE) {
+				try {
+					if (CacheInfo.checkFreshThreadCache(mActivity.getApplicationContext()) &&
+							url.equals(CacheInfo.getCachedThreadUrl(mActivity.getApplicationContext()))) {
+						in = mActivity.openFileInput(Constants.FILENAME_THREAD_CACHE);
+						mContentLength = mActivity.getFileStreamPath(Constants.FILENAME_THREAD_CACHE).length();
+						currentlyUsingCache = true;
+						if (Constants.LOGGING) Log.d(TAG, "Using cached thread JSON, length=" + mContentLength);
+					}
+				} catch (Exception cacheEx) {
+					if (Constants.LOGGING) Log.d(TAG, "skip cache", cacheEx);
+				}
+			}
 			
 		} catch (Exception e) {
 			if (Constants.LOGGING) Log.e(TAG, "DownloadCommentTask", e);
