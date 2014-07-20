@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import ssk.project.Practice.common.CacheInfo;
@@ -110,6 +111,10 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 				} catch (Exception cacheEx) {
 					if (Constants.LOGGING) Log.d(TAG, "skip cache", cacheEx);
 				}
+			}
+			
+			if (!currentlyUsingCache) {
+				HttpGet request = new HttpGet(url);
 			}
 			
 		} catch (Exception e) {
