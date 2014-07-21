@@ -5,7 +5,9 @@ import java.beans.PropertyChangeListener;
 import java.io.InputStream;
 import java.util.LinkedList;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -115,6 +117,16 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			
 			if (!currentlyUsingCache) {
 				HttpGet request = new HttpGet(url);
+				HttpResponse response = mClient.execute(request);
+				
+				Header contentLengthHeader = response.getFirstHeader("Content-Length");
+				if (contentLengthHeader != null) {
+					mContentLength = Long.valueOf(contentLengthHeader.getValue());
+					if (Constants.LOGGING) Log.d(TAG, "Content Length: " + mContentLength);
+				} else {
+					mContentLength = -1;
+					if (Constants.LOGGING) Log.d(TAG, "Content Length: UNAVAILABLE");
+				}
 			}
 			
 		} catch (Exception e) {
