@@ -127,6 +127,17 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 					mContentLength = -1;
 					if (Constants.LOGGING) Log.d(TAG, "Content Length: UNAVAILABLE");
 				}
+				
+				entity = response.getEntity();
+				in = entity.getContent();
+				
+				if (Constants.USE_COMMENTS_CACHE) {
+					in = CacheInfo.writeThenRead(mActivity.getApplicationContext(), in, Constants.FILENAME_THREAD_CACHE);
+					try {
+						if (CacheInfo.checkFreshThreadCache(mActivity.getApplicationContext()) 
+								&& url.equals(CacheInfo.getCachedThreadUrl(mActivity.getApplicationContext()))
+					}
+				}
 			}
 			
 		} catch (Exception e) {
