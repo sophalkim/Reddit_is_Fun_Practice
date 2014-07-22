@@ -2,6 +2,7 @@ package ssk.project.Practice.reddit.comments;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 
@@ -20,6 +21,7 @@ import android.util.Log;
 
 import com.andrewshu.android.reddit.comments.CommentsListActivity;
 import com.andrewshu.android.reddit.common.Constants;
+import com.andrewshu.android.reddit.common.ProgressInputStream;
 import com.andrewshu.android.reddit.markdown.Markdown;
 import com.andrewshu.android.reddit.things.ThingInfo;
 import com.andrewshu.android.reddit.threads.ShowThumbnailsTask;
@@ -134,16 +136,36 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 				if (Constants.USE_COMMENTS_CACHE) {
 					in = CacheInfo.writeThenRead(mActivity.getApplicationContext(), in, Constants.FILENAME_THREAD_CACHE);
 					try {
-						if (CacheInfo.checkFreshThreadCache(mActivity.getApplicationContext()) 
-								&& url.equals(CacheInfo.getCachedThreadUrl(mActivity.getApplicationContext()))
+						CacheInfo.setCachedThreadUrl(mActivity.getApplicationContext(), url);
+					} catch (IOException e) {
+						
 					}
 				}
 			}
 			
+			ProgressInputStream pin = new ProgressInputStream(in, mContentLength);
+			pin.addPropertyChangeListener(this);
+			
+			parseCommentsJSON(pin);
+			if (Constants.LOGGING) Log.d(TAG, "parseCommentsJSON completed");
+			
+			pin.close();
+			in.close();
+			
+			return true;
+			
 		} catch (Exception e) {
 			if (Constants.LOGGING) Log.e(TAG, "DownloadCommentTask", e);
+		} finally {
+			if (entity != null) {
+				try {
+					entity.consumeContent();
+				} catch (Exception e2) {
+					if (Constants.LOGGING) Log.e(TAG, "entity.consumeContent()", e2);
+				}
+			}
 		}
-		return null;
+		return false;
 	}
 
 	@Override
