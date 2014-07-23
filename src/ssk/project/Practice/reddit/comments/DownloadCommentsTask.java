@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import org.apache.http.Header;
@@ -167,7 +168,33 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		}
 		return false;
 	}
+	
+	private void replaceCommentsAtPositionUI(final Collection<ThingInfo> comments, final int position) {
+		mActivity.mCommentsList.remove(position);
+		mActivity.mCommentsList.addAll(position, comments);
+		mActivity.mCommentsAdapter.notifyDataSetChanged();
+	}
 
+	private void deferCommentAppend(ThingInfo comment) {
+		mDeferredAppendList.add(comment);
+	}
+	
+	private void deferCommentReplacement(ThingInfo comment) {
+		mDeferredReplacementList.add(comment);
+	}
+	
+	private boolean isInsertingEntireThread() {
+		return mPositionOffset == 0;
+	}
+	
+	private void disableLoadingScreenKeepProgress() {
+		mActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				mActivity.resetUI(mActivity.mCommentsAdapter);
+			}
+		});
+	}
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		

@@ -119,7 +119,7 @@ public class CommentsListActivity extends ListActivity
     private final Pattern COMMENT_CONTEXT_PATTERN = Pattern.compile("context=(\\d+)");
 
     /** Custom list adapter that fits our threads data into the list. */
-    CommentsListAdapter mCommentsAdapter = null;
+    public CommentsListAdapter mCommentsAdapter = null;
     public ArrayList<ThingInfo> mCommentsList = null;
     
     private final HttpClient mClient = RedditIsFunHttpClientFactory.getGzipHttpClient();
@@ -338,7 +338,7 @@ public class CommentsListActivity extends ListActivity
     	return mCommentsAdapter != null && mCommentsAdapter.getItemViewType(position) == CommentsListAdapter.MORE_ITEM_VIEW_TYPE;
     }
     
-    final class CommentsListAdapter extends ArrayAdapter<ThingInfo> {
+    public final class CommentsListAdapter extends ArrayAdapter<ThingInfo> {
     	public static final int OP_ITEM_VIEW_TYPE = 0;
     	public static final int COMMENT_ITEM_VIEW_TYPE = 1;
     	public static final int MORE_ITEM_VIEW_TYPE = 2;
@@ -571,7 +571,7 @@ public class CommentsListActivity extends ListActivity
      * Resets the output UI list contents, retains session state.
      * @param commentsAdapter A new CommentsListAdapter to use. Pass in null to create a new empty one.
      */
-    void resetUI(CommentsListAdapter commentsAdapter) {
+    public void resetUI(CommentsListAdapter commentsAdapter) {
     	findViewById(R.id.loading_light).setVisibility(View.GONE);
     	findViewById(R.id.loading_dark).setVisibility(View.GONE);
     	
