@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import junit.framework.Assert;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,6 +20,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import ssk.project.Practice.common.CacheInfo;
 import ssk.project.Practice.common.Common;
 import ssk.project.Practice.settings.RedditSettings;
+import ssk.project.Practice.util.StringUtils;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -26,6 +29,7 @@ import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.common.ProgressInputStream;
 import com.andrewshu.android.reddit.markdown.Markdown;
 import com.andrewshu.android.reddit.things.Listing;
+import com.andrewshu.android.reddit.things.ListingData;
 import com.andrewshu.android.reddit.things.ThingInfo;
 import com.andrewshu.android.reddit.threads.ShowThumbnailsTask;
 
@@ -203,6 +207,14 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		String genericListingError = "Not a comments listing";
 		try {
 			Listing[] listings = mObjectMapper.readValue(in, Listing[].class);
+			Assert.assertEquals(Constants.JSON_LISTING, listings[0].getKind(), genericListingError);
+			
+			ListingData threadListingData = listings[0].getData();
+			if (StringUtils.isEmpty(threadListingData.getModhash())) {
+				mSettings.setModhash(null);
+			} else {
+				mSettings.setModhash(threadListingData.getModhash());
+			}
 		}
 	}
 	
