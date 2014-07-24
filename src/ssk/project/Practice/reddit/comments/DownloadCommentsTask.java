@@ -12,6 +12,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import ssk.project.Practice.common.CacheInfo;
@@ -24,6 +25,7 @@ import com.andrewshu.android.reddit.comments.CommentsListActivity;
 import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.common.ProgressInputStream;
 import com.andrewshu.android.reddit.markdown.Markdown;
+import com.andrewshu.android.reddit.things.Listing;
 import com.andrewshu.android.reddit.things.ThingInfo;
 import com.andrewshu.android.reddit.threads.ShowThumbnailsTask;
 
@@ -195,6 +197,31 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			}
 		});
 	}
+	
+	private void parseCommentsJSON(InputStream in) throws IOException, JsonParseException {
+		int insertedCommentIndex;
+		String genericListingError = "Not a comments listing";
+		try {
+			Listing[] listings = mObjectMapper.readValue(in, Listing[].class);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		
