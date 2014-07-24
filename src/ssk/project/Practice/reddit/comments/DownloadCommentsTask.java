@@ -215,6 +215,8 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			} else {
 				mSettings.setModhash(threadListingData.getModhash());
 			}
+			
+			if (Constants.LOGGING) Log.d(TAG, "Successfully get OP listing[0]: modhash" + mSettings.getModhash());
 		}
 	}
 	
