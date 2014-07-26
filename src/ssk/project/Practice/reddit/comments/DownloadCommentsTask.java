@@ -31,6 +31,7 @@ import com.andrewshu.android.reddit.markdown.Markdown;
 import com.andrewshu.android.reddit.things.Listing;
 import com.andrewshu.android.reddit.things.ListingData;
 import com.andrewshu.android.reddit.things.ThingInfo;
+import com.andrewshu.android.reddit.things.ThingListing;
 import com.andrewshu.android.reddit.threads.ShowThumbnailsTask;
 
 public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> implements PropertyChangeListener {
@@ -217,6 +218,11 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			}
 			
 			if (Constants.LOGGING) Log.d(TAG, "Successfully get OP listing[0]: modhash" + mSettings.getModhash());
+			
+			ThingListing threadThingListing = threadListingData.getChildren()[0];
+			Assert.assertEquals(Constants.THREAD_KIND, threadThingListing.getKind(), genericListingError);
+		} catch (Exception ex) {
+			if (Constants.LOGGING) Log.e(TAG, "parseCommentsJSON", ex);
 		}
 	}
 	
