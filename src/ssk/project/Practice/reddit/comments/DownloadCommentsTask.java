@@ -221,6 +221,21 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			
 			ThingListing threadThingListing = threadListingData.getChildren()[0];
 			Assert.assertEquals(Constants.THREAD_KIND, threadThingListing.getKind(), genericListingError);
+			
+			if (isInsertingEntireThread()) {
+				parseOP(threadThingListing.getData());
+				insertedCommentIndex = 0;
+				disableLoadingScreenKeepProgress();
+			} else {
+				insertedCommentIndex = mPositionOffset - 1;
+			}
+			
+			ListingData commentListingData = listings[1].getData();
+			for (ThingListing commentThingListing : commentListingData.getChildren()) {
+				insertedCommentIndex = insertNestedComment(commentThingListing, 0, insertedCommentIndex + 1);
+			}
+			
+			mProcessCommentsTask.mergeLowPriorityListToMainList();
 		} catch (Exception ex) {
 			if (Constants.LOGGING) Log.e(TAG, "parseCommentsJSON", ex);
 		}
