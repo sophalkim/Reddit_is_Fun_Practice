@@ -21,7 +21,10 @@ import ssk.project.Practice.common.CacheInfo;
 import ssk.project.Practice.common.Common;
 import ssk.project.Practice.settings.RedditSettings;
 import ssk.project.Practice.util.StringUtils;
+import ssk.project.Practice.util.Util;
 import android.os.AsyncTask;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 
 import com.andrewshu.android.reddit.comments.CommentsListActivity;
@@ -239,6 +242,37 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		} catch (Exception ex) {
 			if (Constants.LOGGING) Log.e(TAG, "parseCommentsJSON", ex);
 		}
+	}
+	
+	private void parseOP(final ThingInfo data) {
+		data.setIndent(0);
+		data.setClicked(Common.isClicked(mActivity, data.getUrl()));
+		
+		mActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				mActivity.mCommentsList.add(0, data);
+			}
+		});
+		
+		if (data.isIs_self() && data.getSelftext_html() != null) {
+			String unescapedHtmlSelftext = Html.fromHtml(data.getSelftext_html()).toString();
+			Spanned selftext = Html.fromHtml(Util.convertHtmlTags(unescapedHtmlSelftext));
+			
+			if (selftext.length() > 2) {
+				data.setSpannedSelftext(selftext.subSequence(0, selftext.length() - 2));
+			} else {
+				data.setSpannedSelftext("");
+			}
+			markdown.getURLs(data.getSelftext(), data.getUrls());
+		}
+		
+		mThreadTitle = data.getTitle();
+		mActivity.setThreadTitle(mThreadTitle);
+		mSubreddit = data.getSubreddit();
+		mThreadId = data.getId();
+		
+		mOpThingInfo = data;
 	}
 	
 	
