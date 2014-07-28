@@ -28,6 +28,7 @@ import android.text.Spanned;
 import android.util.Log;
 
 import com.andrewshu.android.reddit.comments.CommentsListActivity;
+import com.andrewshu.android.reddit.comments.ProcessCommentsTask.DeferredCommentProcessing;
 import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.common.ProgressInputStream;
 import com.andrewshu.android.reddit.markdown.Markdown;
@@ -273,6 +274,36 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		mThreadId = data.getId();
 		
 		mOpThingInfo = data;
+	}
+	
+	int insertNestedComment(ThingListing commentThingListing, int indentLevel, int insertedCommentIndex) {
+		ThingInfo ci = commentThingListing.getData();
+		
+		if (isInsertingEntireThread()) {
+			deferCommentAppend(ci);
+		} else {
+			deferCommentReplacement(ci);
+		}
+		
+		if (isHasJumpTarget()) {
+			if (!isFoundJumpTargetComment() && mJumpToCommentId.equals(ci.getId())) {
+				processJumpTarget(ci, insertedCommentIndex);
+			}
+		}
+		
+		if (isHasJumpTarget()) {
+			if (isFoundJumpTargetComment()) {
+				mProcessCommentsTask.addDeferred(new DeferredCommentProcessing(ci, insertedCommentIndex));
+			} else {
+				if (mJumpToCommentContext > 0) {
+					mProcessCommentsTask.addDeferredHighPriority(new DeferredCommentProcessing(ci, insertedCommentIndex));
+				} else {
+					mProcessCommentsTask.addDeferredLowPriority(new DeferredCommentProcessing(ci, insertedCommentIndex));
+				}
+			}
+		} else {
+			mProcessCommentsTask.addDeferred(new DeferredCommentProcessing(ci, insertedCommentIndex));
+		}
 	}
 	
 	

@@ -310,11 +310,11 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean>
 		}
 	}
 	
-	private void parseOP(final ThingInfo data) {
-		data.setIndent(0);
-		data.setClicked(Common.isClicked(mActivity, data.getUrl()));
-		
-		mActivity.runOnUiThread(new Runnable() {
+		private void parseOP(final ThingInfo data) {
+			data.setIndent(0);
+			data.setClicked(Common.isClicked(mActivity, data.getUrl()));
+			
+			mActivity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				mActivity.mCommentsList.add(0, data);
