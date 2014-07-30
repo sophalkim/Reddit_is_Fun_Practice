@@ -304,6 +304,14 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		} else {
 			mProcessCommentsTask.addDeferred(new DeferredCommentProcessing(ci, insertedCommentIndex));
 		}
+		
+		ci.setIndent(mIndentation + indentLevel);
+		
+		if (Constants.MORE_KIND.equals(commentThingListing.getKind())) {
+			ci.setLoadMoreCommentsPlaceholder(true);
+			if (Constants.LOGGING) Log.v(TAG, "new more position at " + (insertedCommentIndex));
+			return insertedCommentIndex;
+		}
 	}
 	
 	
