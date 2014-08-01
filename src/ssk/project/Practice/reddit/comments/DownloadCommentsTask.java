@@ -312,6 +312,11 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			if (Constants.LOGGING) Log.v(TAG, "new more position at " + (insertedCommentIndex));
 			return insertedCommentIndex;
 		}
+		
+		if (!Constants.COMMENT_KIND.equals(commentThingListing.getKind())) {
+			if (Constants.LOGGING) Log.e(TAG, "comment whose kind is \"" + commentThingListing.getKind() + "\" (expected " + Constants.COMMENT_KIND + ")");
+			return insertedCommentIndex;
+		}
 	}
 	
 	
