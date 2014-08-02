@@ -317,7 +317,31 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			if (Constants.LOGGING) Log.e(TAG, "comment whose kind is \"" + commentThingListing.getKind() + "\" (expected " + Constants.COMMENT_KIND + ")");
 			return insertedCommentIndex;
 		}
+		
+		Listing repliesListing = ci.getReplies();
+		if (repliesListing == null)
+			return insertedCommentIndex;
+		ListingData repliesListingData = repliesListing.getData();
+		if (repliesListingData == null)
+			return insertedCommentIndex;
+		ThingListing[] replyThingListings = repliesListingData.getChildren();
+		if (replyThingListings == null)
+			return insertedCommentIndex;
+		for (ThingListing replyThingListing : replyThingListings) {
+			insertedCommentIndex = insertNestedComment(replyThingListing, indentLevel + 1, insertedCommentIndex + 1);
+		}
+		return insertedCommentIndex;
 	}
+	
+	private boolean isHasJumpTarget() {
+		return !StringUtils.isEmpty(mJumpToCommentId);
+	}
+	
+	private boolean isFoundJumpTargetComment() {
+		return mJumpToCommentFoundIndex != -1;
+	}
+	
+	
 	
 	
 	
