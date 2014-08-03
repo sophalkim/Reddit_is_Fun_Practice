@@ -341,6 +341,13 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		return mJumpToCommentFoundIndex != -1;
 	}
 	
+	private void processJumpTarget(ThingInfo comment, int commentIndex) {
+		mJumpToCommentFoundIndex = (commentIndex - mJumpToCommentContext) > 0 ? (commentIndex - mJumpToCommentContext) : 0;
+		mProcessCommentsTask.mergeHighPriorityListToMainList();
+	}
+	
+	
+	
 	
 	
 	
