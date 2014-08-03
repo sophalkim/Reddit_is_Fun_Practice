@@ -346,6 +346,15 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		mProcessCommentsTask.mergeHighPriorityListToMainList();
 	}
 	
+	private void insertCommentsUI() {
+		mActivity.mCommentsList.addAll(mDeferredAppendList);
+		mActivity.mCommentsAdapter.notifyDataSetChanged();
+	}
+	
+	private void processDeferredComments() {
+		mProcessCommentsTask.execute();
+	}
+	
 	
 	
 	
