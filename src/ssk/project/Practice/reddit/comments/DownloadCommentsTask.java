@@ -355,7 +355,16 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		mProcessCommentsTask.execute();
 	}
 	
-	
+	private void showOPThumbnail() {
+		if (mOpThingInfo != null) {
+			synchronized (mCurrentShowThumbnailsTaskLock) {
+				if (mCurrentShowThumbnailsTask != null)
+					mCurrentShowThumbnailsTask.cancel(true);
+				mCurrentShowThumbnailsTask = new ShowThumbnailsTask(mActivity, mClient, null);
+			}
+			
+		}
+	}
 	
 	
 	
