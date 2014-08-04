@@ -37,6 +37,7 @@ import com.andrewshu.android.reddit.things.ListingData;
 import com.andrewshu.android.reddit.things.ThingInfo;
 import com.andrewshu.android.reddit.things.ThingListing;
 import com.andrewshu.android.reddit.threads.ShowThumbnailsTask;
+import com.andrewshu.android.reddit.threads.ShowThumbnailsTask.ThumbnailLoadAction;
 
 public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> implements PropertyChangeListener {
 
@@ -362,9 +363,16 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 					mCurrentShowThumbnailsTask.cancel(true);
 				mCurrentShowThumbnailsTask = new ShowThumbnailsTask(mActivity, mClient, null);
 			}
-			
+			mCurrentShowThumbnailsTask.execute(new ThumbnailLoadAction(mOpThingInfo, null, 0));
 		}
 	}
+	
+	void cleanupDeferred() {
+		mDeferredAppendList.clear();
+		mDeferredReplacementList.clear();
+	}
+	
+	
 	
 	
 	
