@@ -379,6 +379,9 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			cancel(true);
 			return;
 		}
+		synchronized (mCurrentDownloadCommentsTaskLock) {
+			
+		}
 	}
 	
 	
