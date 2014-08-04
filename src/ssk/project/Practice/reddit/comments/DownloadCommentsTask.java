@@ -372,7 +372,14 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		mDeferredReplacementList.clear();
 	}
 	
-	
+	@Override
+	public void onPreExecute() {
+		if (mThreadId == null) {
+			if (Constants.LOGGING) Log.e(TAG, "mSettings.threadId == null");
+			cancel(true);
+			return;
+		}
+	}
 	
 	
 	
