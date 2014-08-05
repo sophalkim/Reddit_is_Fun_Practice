@@ -380,7 +380,18 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			return;
 		}
 		synchronized (mCurrentDownloadCommentsTaskLock) {
-			
+			if (mCurrentDownloadCommentsTask != null) {
+				this.cancel(true);
+				return;
+			}
+			mCurrentDownloadCommentsTask = this;
+		}
+		
+		if (isInsertingEntireThread()) {
+			if (mActivity.mCommentsAdapter != null)
+				mActivity.mCommentsAdapter.clear();
+			else
+				mActivity.resetUI(null);
 		}
 	}
 	

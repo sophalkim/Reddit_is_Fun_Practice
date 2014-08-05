@@ -614,7 +614,7 @@ public class CommentsListActivity extends ListActivity
 		}
     }
     
-    void enableLoadingScreen() {
+    public void enableLoadingScreen() {
     	if (Util.isLightTheme(mSettings.getTheme())) {
     		findViewById(R.id.loading_light).setVisibility(View.VISIBLE);
     		findViewById(R.id.loading_dark).setVisibility(View.GONE);
