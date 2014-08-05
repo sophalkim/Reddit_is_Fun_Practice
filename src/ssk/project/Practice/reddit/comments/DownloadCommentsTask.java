@@ -398,7 +398,8 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		
 		if (mContentLength == -1)
 			mActivity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_INDETERMINATE_ON);
-		
+		if (mThreadTitle != null)
+			mActivity.setTitle(mThreadTitle + " : " + mSubreddit);
 	}
 	
 	
