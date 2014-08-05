@@ -26,6 +26,7 @@ import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.Window;
 
 import com.andrewshu.android.reddit.comments.CommentsListActivity;
 import com.andrewshu.android.reddit.comments.ProcessCommentsTask.DeferredCommentProcessing;
@@ -392,7 +393,12 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 				mActivity.mCommentsAdapter.clear();
 			else
 				mActivity.resetUI(null);
+			mActivity.enableLoadingScreen();
 		}
+		
+		if (mContentLength == -1)
+			mActivity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_INDETERMINATE_ON);
+		
 	}
 	
 	
