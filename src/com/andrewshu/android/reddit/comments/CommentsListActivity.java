@@ -594,7 +594,7 @@ public class CommentsListActivity extends ListActivity
     /**
      * Mark the OP submitter comments
      */
-    void markSubmitterComments() {
+    public void markSubmitterComments() {
     	if (getOpThingInfo() == null || mCommentsAdapter == null)
     		return;
     	

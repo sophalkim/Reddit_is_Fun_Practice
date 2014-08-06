@@ -402,6 +402,21 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			mActivity.setTitle(mThreadTitle + " : " + mSubreddit);
 	}
 	
+	@Override
+	public void onPostExecute(Boolean success) {
+		if (isInsertingEntireThread()) {
+			insertCommentsUI();
+			if (isFoundJumpTargetComment())
+				mActivity.getListView().setSelection(mJumpToCommentFoundIndex);
+		} else if (!mDeferredReplacementList.isEmpty()) {
+			replaceCommentsAtPositionUI(mDeferredReplacementList, mPositionOffset);
+		}
+		processDeferredComments();
+		if (Common.shouldLoadThumbnails(mActivity, mSettings));
+			showOPThumbnail();
+			
+	}
+	
 	
 	
 	
