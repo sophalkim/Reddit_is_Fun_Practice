@@ -27,6 +27,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.andrewshu.android.reddit.comments.CommentsListActivity;
 import com.andrewshu.android.reddit.comments.ProcessCommentsTask.DeferredCommentProcessing;
@@ -414,7 +415,27 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		processDeferredComments();
 		if (Common.shouldLoadThumbnails(mActivity, mSettings));
 			showOPThumbnail();
-			
+		mActivity.markSubmitterComments();
+		
+		if (mContentLength = -1)
+			mActivity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_INDETERMINATE_OFF);
+		else 
+			mActivity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_END);
+		
+		if (success) {
+			mActivity.setShouldClearReply(true);
+			if (mThreadTitle != null)
+				mActivity.setTitle(mThreadTitle + " : " + mSubreddit);
+		} else {
+			if (!isCancelled()) {
+				Common.showErrorToast("Error downloading comments. Please try again.", Toast.LENGTH_LONG, mActivity);
+				mActivity.resetUI(null);
+			}
+		}
+		
+		synchronized (mCurrentDownloadCommentsTaskLock) {
+			mCurrentDownloadCommentsTask = null;
+		}
 	}
 	
 	
