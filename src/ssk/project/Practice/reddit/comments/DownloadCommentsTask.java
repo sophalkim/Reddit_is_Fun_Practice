@@ -417,7 +417,7 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 			showOPThumbnail();
 		mActivity.markSubmitterComments();
 		
-		if (mContentLength = -1)
+		if (mContentLength == -1)
 			mActivity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_INDETERMINATE_OFF);
 		else 
 			mActivity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_END);
@@ -438,27 +438,17 @@ public class DownloadCommentsTask extends AsyncTask<Integer, Long, Boolean> impl
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public void onProgressUpdate(Long... progress) {
+		if (mContentLength == -1)
+			mActivity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_INDETERMINATE_ON);
+		else 
+			mActivity.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, progress[0].intValue() * (Window.PROGRESS_END - 1) / (int) mContentLength);
+	}
 	
 	@Override
-	public void propertyChange(PropertyChangeEvent arg0) {
-		
+	public void propertyChange(PropertyChangeEvent event) {
+		publishProgress((Long) event.getNewValue());
 	}
 
 	

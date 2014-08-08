@@ -72,9 +72,9 @@ public class Common {
 		t.show();
 	}
 	
-	public static boolean shouldLoadThumbnails(Activity activity, RedditSettings settings) {
+	public static boolean shouldLoadThumbnails(Activity activity, RedditSettings mSettings) {
 		boolean thumbOkay = true;
-		if (settings.isLoadThumbnailsOnlyWifi()) {
+		if (mSettings.isLoadThumbnailsOnlyWifi()) {
 			thumbOkay = false;
 			ConnectivityManager connMan = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo netInfo = connMan.getActiveNetworkInfo();
@@ -82,7 +82,7 @@ public class Common {
 				thumbOkay = true;
 			}
 		}
-		return settings.isLoadThumbnails() && thumbOkay;
+		return mSettings.isLoadThumbnails() && thumbOkay;
 	}
 	
 	public static void updateListDrawables(ListActivity la, int theme) {
