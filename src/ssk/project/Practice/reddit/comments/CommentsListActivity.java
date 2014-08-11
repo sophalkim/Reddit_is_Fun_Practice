@@ -8,6 +8,7 @@ import org.apache.http.client.HttpClient;
 
 import ssk.project.Practice.settings.RedditSettings;
 import ssk.project.Practice.things.ThingInfo;
+import android.app.Activity;
 import android.app.ListActivity;
 import android.view.View;
 
@@ -46,5 +47,18 @@ public class CommentsListActivity extends ListActivity
 	private boolean mCanChord = false;
 	
 	public static Method mActivity_overridePendingTransition;
+	
+	static {
+		initCompatibility();
+	}
+	
+	private static void initCompatibility() {
+		try {
+			mActivity_overridePendingTransition = Activity.class.getMethod(
+					"overridePendingTransition", new Class[] { Integer.TYPE, Integer.TYPE });
+		} catch (NoSuchMethodException nsme) {
+			
+		}
+	}
 	
 }
