@@ -10,8 +10,12 @@ import ssk.project.Practice.settings.RedditSettings;
 import ssk.project.Practice.things.ThingInfo;
 import android.app.Activity;
 import android.app.ListActivity;
+import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.webkit.CookieSyncManager;
 
+import com.andrewshu.android.reddit.R;
 import com.andrewshu.android.reddit.comments.CommentsListActivity.CommentsListAdapter;
 import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.common.RedditIsFunHttpClientFactory;
@@ -59,6 +63,24 @@ public class CommentsListActivity extends ListActivity
 		} catch (NoSuchMethodException nsme) {
 			
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		CookieSyncManager.createInstance(getApplicationContext());
+		
+		mSettings.loadRedditPreferences(this, mClient);
+		
+		setRequestedOrientation(mSettings.getRotation());
+		setTheme(mSettings.getTheme());
+		requestWindowFeature(Window.FEATURE_PROGRESS);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		
+		setContentView(R.layout.comments_list_content);
+		registerForContextMenu(getListView());
 	}
 	
 }
