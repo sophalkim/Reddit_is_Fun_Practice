@@ -81,6 +81,30 @@ public class CommentsListActivity extends ListActivity
 		
 		setContentView(R.layout.comments_list_content);
 		registerForContextMenu(getListView());
+		
+		if (savedInstanceState != null) {
+			mReplyTargetName = savedInstanceState.getString(Constants.REPLY_TARGET_NAME_KEY);
+			mReportTargetName = savedInstanceState.getString(Constants.REPORT_TARGET_NAME_KEY);
+			mEditTargetBody = savedInstanceState.getString(Constants.EDIT_TARGET_BODY_KEY);
+			mDeleteTargetKind = savedInstanceState.getString(Constants.DELETE_TARGET_KIND_KEY);
+			mThreadTitle = savedInstanceState.getString(Constants.THREAD_ID_KEY);
+			mSubreddit = savedInstanceState.getString(Constants.SUBREDDIT_KEY);
+			mThreadId = savedInstanceState.getString(Constants.THREAD_ID_KEY);
+			mVoteTargetThing = savedInstanceState.getParcelable(Constants.VOTE_TARGET_THING_INFO_KEY);
+		
+			if (mThreadTitle != null) {
+				setTitle(mThreadTitle + " : " + mSubreddit);
+			}
+			
+			mCommentsList = (ArrayList<ThingInfo>) getLastNonConfigurationInstance();
+			if (mCommentsList == null) {
+				getNewDownloadCommentsTask().execute(Constants.DEFAULT_COMMENT_DOWNLOAD_LIMIT);
+			} else {
+				resetUI(new CommentsListAdapter(this, mCommentsList));
+			}
+		} else {
+			
+		}
 	}
 	
 }
