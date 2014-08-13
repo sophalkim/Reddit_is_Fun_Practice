@@ -103,7 +103,7 @@ public class CommentsListActivity extends ListActivity
 				resetUI(new CommentsListAdapter(this, mCommentsList));
 			}
 		} else {
-			
+			if (Constants.LOGGING) Log.e(TAG, "Quitting because no subreddit and thread id data was passed into the Intent");
 		}
 	}
 	
