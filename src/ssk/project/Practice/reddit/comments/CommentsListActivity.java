@@ -132,6 +132,16 @@ public class CommentsListActivity extends ListActivity
 						jumpToCommentId = m.group(3);
 					}
 				}
+			} else {
+				if (Constants.LOGGING) Log.e(TAG, "Quitting because of bad comment path.");
+				finish();
+				return;
+			}
+			if (commentQuery != null) {
+				Matcher m = COMMENT_CONTEXT_PATTERN.matcher(commentQuery);
+				if (m.find()) {
+					jumpToCommentContext = m.group(1) != null ? Integer.valueOf(m.group(1)) : 0;
+				}
 			}
 		}
 	}
