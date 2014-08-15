@@ -2,6 +2,7 @@ package ssk.project.Practice.reddit.comments;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.client.HttpClient;
@@ -123,6 +124,13 @@ public class CommentsListActivity extends ListActivity
 				if (Constants.LOGGING) Log.d(TAG, "comment path: " + commentPath);
 				if (Util.isRedditShortenedUri(data)) {
 					mThreadId = commentPath.substring(1);
+				} else {
+					Matcher m = COMMENT_PATH_PATTERN.matcher(commentPath);
+					if (m.matches()) {
+						mSubreddit = m.group(1);
+						mThreadId = m.group(2);
+						jumpToCommentId = m.group(3);
+					}
 				}
 			}
 		}
