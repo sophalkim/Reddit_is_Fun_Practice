@@ -8,9 +8,12 @@ import org.apache.http.client.HttpClient;
 
 import ssk.project.Practice.settings.RedditSettings;
 import ssk.project.Practice.things.ThingInfo;
+import ssk.project.Practice.util.Util;
 import android.app.Activity;
 import android.app.ListActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.CookieSyncManager;
@@ -103,7 +106,25 @@ public class CommentsListActivity extends ListActivity
 				resetUI(new CommentsListAdapter(this, mCommentsList));
 			}
 		} else {
-			if (Constants.LOGGING) Log.e(TAG, "Quitting because no subreddit and thread id data was passed into the Intent");
+			String commentPath;
+			String commentQuery;
+			String jumpToCommentId = null;
+			int jumpToCommentContext = 0;
+			Uri data = getIntent().getData();
+			if (data != null) {
+				commentPath = data.getPath();
+				commentQuery = data.getQuery();
+			} else {
+				if (Constants.LOGGING) Log.e(TAG, "Quitting because no subreddit and thread id data was passed into the Intent");
+				finish();
+				return;
+			}
+			if (commentPath != null) {
+				if (Constants.LOGGING) Log.d(TAG, "comment path: " + commentPath);
+				if (Util.isRedditShortenedUri(data)) {
+					mThreadId = commentPath.substring(1);
+				}
+			}
 		}
 	}
 	
