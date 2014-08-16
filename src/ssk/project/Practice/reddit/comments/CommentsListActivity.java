@@ -143,6 +143,17 @@ public class CommentsListActivity extends ListActivity
 					jumpToCommentContext = m.group(1) != null ? Integer.valueOf(m.group(1)) : 0;
 				}
 			}
+			Bundle extras = getIntent().getExtras();
+			if (extras != null) {
+				String subreddit = extras.getString(Constants.EXTRA_SUBREDDIT);
+				if (subreddit != null) {
+					mSubreddit = subreddit;
+				}
+				mThreadTitle = extras.getString(Constants.EXTRA_TITLE);
+				if (mThreadTitle != null) {
+					setTitle(mThreadTitle + " : " + mSubreddit);
+				}
+			}
 		}
 	}
 	
