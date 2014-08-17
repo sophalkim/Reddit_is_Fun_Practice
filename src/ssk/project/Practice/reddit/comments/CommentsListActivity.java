@@ -9,6 +9,7 @@ import org.apache.http.client.HttpClient;
 
 import ssk.project.Practice.settings.RedditSettings;
 import ssk.project.Practice.things.ThingInfo;
+import ssk.project.Practice.util.StringUtils;
 import ssk.project.Practice.util.Util;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -154,7 +155,16 @@ public class CommentsListActivity extends ListActivity
 					setTitle(mThreadTitle + " : " + mSubreddit);
 				}
 			}
+			
+			if (!StringUtils.isEmpty(jumpToCommentId)) {
+				getNewDownloadCommentsTask().prepareLoadandJumpToComment(jumpToCommentId, jumpToCommentContext)
+						.execute(Constants.DEFAULT_COMMENT_DOWNLOAD_LIMIT);
+			} else {
+				getNewDownloadCommentsTask().execute(Constants.DEFAULT_COMMENT_DOWNLOAD_LIMIT);
+			}
 		}
 	}
+	
+	
 	
 }
