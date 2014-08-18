@@ -24,6 +24,7 @@ import com.andrewshu.android.reddit.R;
 import com.andrewshu.android.reddit.comments.CommentsListActivity.CommentsListAdapter;
 import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.common.RedditIsFunHttpClientFactory;
+import com.andrewshu.android.reddit.mail.PeekEnvelopeTask;
 
 public class CommentsListActivity extends ListActivity 
 		implements View.OnCreateContextMenuListener {
@@ -165,6 +166,22 @@ public class CommentsListActivity extends ListActivity
 		}
 	}
 	
-	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		int previousTheme = mSettings.getTheme();
+		
+		mSettings.loadRedditPreferences(this, mClient);
+		if (mSettings.getTheme() != previousTheme) {
+			relaunchActivity();
+		} else {
+			CookieSyncManager.getInstance().startSync();
+			setRequestedOrientation(mSettings.getRotation());
+			
+			if (mSettings.isLoggedIn()) {
+				new PeekEnvelopeTask(this, mClient, mSettings.getMailNotificationStyle()).execute();
+			}
+		}
+	}
 	
 }
