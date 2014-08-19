@@ -184,4 +184,11 @@ public class CommentsListActivity extends ListActivity
 		}
 	}
 	
+	private void relaunchActivity() {
+		finish();
+		startActivity(getIntent());
+	}
+	
+	
+	
 }
