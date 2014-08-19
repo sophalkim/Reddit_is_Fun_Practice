@@ -196,4 +196,8 @@ public class CommentsListActivity extends ListActivity
 		mSettings.saveRedditPreferences(this);
 	}
 	
+	private DownloadCommentsTask getNewDownloadCommentsTask() {
+		return new DownloadCommentsTask(this, mSubreddit, mThreadId, mSettings, mClient);
+	}
+	
 }
