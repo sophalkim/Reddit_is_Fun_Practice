@@ -189,6 +189,11 @@ public class CommentsListActivity extends ListActivity
 		startActivity(getIntent());
 	}
 	
-	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		CookieSyncManager.getInstance().stopSync();
+		mSettings.saveRedditPreferences(this);
+	}
 	
 }
