@@ -200,4 +200,18 @@ public class CommentsListActivity extends ListActivity
 		return new DownloadCommentsTask(this, mSubreddit, mThreadId, mSettings, mClient);
 	}
 	
+	private boolean isHiddenCommentHeadPosition(int position) {
+		return mCommentsAdapter != null && mCommentsAdapter.getItemViewType(position) == CommentsListAdapter.HIDDEN_ITEM_HEAD_VIEW_TYPE;
+	}
+	
+	private boolean isHiddenCommentDescendantPosition(int position) {
+		return mCommentsAdapter != null && mCommentsAdapter.getItem(position).isHiddenCommentHead();
+	}
+	
+	private boolean isLoadMoreCommentsPosition(int position) {
+		return mCommentsAdapter != null && mCommentsAdapter.getItemViewType(position) == CommentsListAdapter.MORE_ITEM_VIEW_TYPE;
+	}
+	
+	
+	
 }
