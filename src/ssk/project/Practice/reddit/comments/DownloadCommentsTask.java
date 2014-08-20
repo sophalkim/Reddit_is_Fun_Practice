@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import junit.framework.Assert;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,11 +15,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import ssk.project.Practice.common.CacheInfo;
-import ssk.project.Practice.common.Common;
-import ssk.project.Practice.settings.RedditSettings;
-import ssk.project.Practice.util.StringUtils;
-import ssk.project.Practice.util.Util;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Spanned;
@@ -29,11 +22,16 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.andrewshu.android.reddit.comments.CommentsListActivity;
 import com.andrewshu.android.reddit.comments.ProcessCommentsTask.DeferredCommentProcessing;
+import com.andrewshu.android.reddit.common.CacheInfo;
+import com.andrewshu.android.reddit.common.Common;
 import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.common.ProgressInputStream;
+import com.andrewshu.android.reddit.common.util.Assert;
+import com.andrewshu.android.reddit.common.util.StringUtils;
+import com.andrewshu.android.reddit.common.util.Util;
 import com.andrewshu.android.reddit.markdown.Markdown;
+import com.andrewshu.android.reddit.settings.RedditSettings;
 import com.andrewshu.android.reddit.things.Listing;
 import com.andrewshu.android.reddit.things.ListingData;
 import com.andrewshu.android.reddit.things.ThingInfo;

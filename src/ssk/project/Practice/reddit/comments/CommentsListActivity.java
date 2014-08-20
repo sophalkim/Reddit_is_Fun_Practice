@@ -2,29 +2,86 @@ package ssk.project.Practice.reddit.comments;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 
-import ssk.project.Practice.settings.RedditSettings;
-import ssk.project.Practice.things.ThingInfo;
-import ssk.project.Practice.util.StringUtils;
-import ssk.project.Practice.util.Util;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.CookieSyncManager;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andrewshu.android.reddit.R;
 import com.andrewshu.android.reddit.comments.CommentsListActivity.CommentsListAdapter;
+import com.andrewshu.android.reddit.common.CacheInfo;
+import com.andrewshu.android.reddit.common.Common;
 import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.common.RedditIsFunHttpClientFactory;
+import com.andrewshu.android.reddit.common.tasks.HideTask;
+import com.andrewshu.android.reddit.common.tasks.SaveTask;
+import com.andrewshu.android.reddit.common.util.CollectionUtils;
+import com.andrewshu.android.reddit.common.util.StringUtils;
+import com.andrewshu.android.reddit.common.util.Util;
+import com.andrewshu.android.reddit.login.LoginDialog;
+import com.andrewshu.android.reddit.login.LoginTask;
+import com.andrewshu.android.reddit.mail.InboxActivity;
 import com.andrewshu.android.reddit.mail.PeekEnvelopeTask;
+import com.andrewshu.android.reddit.markdown.MarkdownURL;
+import com.andrewshu.android.reddit.settings.RedditPreferencesPage;
+import com.andrewshu.android.reddit.settings.RedditSettings;
+import com.andrewshu.android.reddit.things.ThingInfo;
+import com.andrewshu.android.reddit.threads.ThreadsListActivity;
+import com.andrewshu.android.reddit.threads.ThumbnailOnClickListenerFactory;
+import com.andrewshu.android.reddit.user.ProfileActivity;
 
 public class CommentsListActivity extends ListActivity 
 		implements View.OnCreateContextMenuListener {
@@ -158,7 +215,7 @@ public class CommentsListActivity extends ListActivity
 			}
 			
 			if (!StringUtils.isEmpty(jumpToCommentId)) {
-				getNewDownloadCommentsTask().prepareLoadandJumpToComment(jumpToCommentId, jumpToCommentContext)
+				getNewDownloadCommentsTask().prepareLoadAndJumpToComment(jumpToCommentId, jumpToCommentContext)
 						.execute(Constants.DEFAULT_COMMENT_DOWNLOAD_LIMIT);
 			} else {
 				getNewDownloadCommentsTask().execute(Constants.DEFAULT_COMMENT_DOWNLOAD_LIMIT);
@@ -211,6 +268,8 @@ public class CommentsListActivity extends ListActivity
 	private boolean isLoadMoreCommentsPosition(int position) {
 		return mCommentsAdapter != null && mCommentsAdapter.getItemViewType(position) == CommentsListAdapter.MORE_ITEM_VIEW_TYPE;
 	}
+	
+	
 	
 	
 	

@@ -20,7 +20,7 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 
 	private static final String TAG = "ProcessCommentsTask";
 	
-	private final CommentsListActivity mActivity;
+	private final ssk.project.Practice.reddit.comments.CommentsListActivity mActivity;
 	private final Markdown markdown = new Markdown();
 	
 	private final LinkedList<DeferredCommentProcessing> mDeferredProcessingList = new LinkedList<DeferredCommentProcessing>();
@@ -36,8 +36,8 @@ public class ProcessCommentsTask extends AsyncTask<Void, Integer, Void>{
 		}
 	}
 	
-	public ProcessCommentsTask(CommentsListActivity commentsListActivity) {
-		mActivity = commentsListActivity;
+	public ProcessCommentsTask(ssk.project.Practice.reddit.comments.CommentsListActivity activity) {
+		mActivity = activity;
 	}
 	
 	public void addDeferred(DeferredCommentProcessing deferredCommentProcessing) {
