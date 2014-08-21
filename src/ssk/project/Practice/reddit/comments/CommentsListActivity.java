@@ -231,6 +231,26 @@ public class CommentsListActivity extends ListActivity
 			super(context, 0, objects);
 			mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
+		
+		@Override
+		public int getItemViewType(int position) {
+			if (position == 0) {
+				return OP_ITEM_VIEW_TYPE;
+			}
+			if (position == mFrequentSeparatorPos) {
+				return IGNORE_ITEM_VIEW_TYPE;
+			}
+			
+			ThingInfo item = getItem(position);
+			if (item.isHiddenCommentDescendant())
+				return IGNORE_ITEM_VIEW_TYPE;
+			if (item.isHiddenCommentHead())
+				return HIDDEN_ITEM_HEAD_VIEW_TYPE;
+			if (item.isLoadMoreCommentsPlaceholder())
+				return MORE_ITEM_VIEW_TYPE;
+			
+			return COMMENT_ITEM_VIEW_TYPE;
+		}
 	}
 	
 	
