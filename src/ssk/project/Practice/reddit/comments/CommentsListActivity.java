@@ -2,6 +2,7 @@ package ssk.project.Practice.reddit.comments;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.CookieSyncManager;
 import android.widget.ArrayAdapter;
@@ -264,7 +266,19 @@ public class CommentsListActivity extends ListActivity
 			return super.isEmpty();
 		}
 		
-		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View view = convertView;
+			ThingInfo item = this.getItem(position);
+			
+			try {
+				if (position == 0) {
+					if (view == null) {
+						view = mInflater.inflate(R.layout.threads_list_item, null);
+					}
+				}
+			}
+		}
 		
 		
 	}
