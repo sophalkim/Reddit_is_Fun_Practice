@@ -251,6 +251,22 @@ public class CommentsListActivity extends ListActivity
 			
 			return COMMENT_ITEM_VIEW_TYPE;
 		}
+		
+		@Override
+		public int getViewTypeCount() {
+			return VIEW_TYPE_COUNT;
+		}
+		
+		@Override
+		public boolean isEmpty() {
+			if (mIsLoading)
+				return false;
+			return super.isEmpty();
+		}
+		
+		
+		
+		
 	}
 	
 	
