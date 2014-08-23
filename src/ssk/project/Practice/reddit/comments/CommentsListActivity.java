@@ -21,6 +21,7 @@ import android.view.Window;
 import android.webkit.CookieSyncManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.andrewshu.android.reddit.R;
 import com.andrewshu.android.reddit.common.Constants;
@@ -286,6 +287,9 @@ public class CommentsListActivity extends ListActivity
 					if (thumbnailContainer != null)
 						thumbnailContainer.setVisibility(View.GONE);
 				}
+				
+				TextView submissionStuffView = (TextView) view.findViewById(R.id.submissionTime_submitter);
+				TextView selftextView = (TextView) view.findViewById(R.id.selftext);
 			}
 		}
 		
