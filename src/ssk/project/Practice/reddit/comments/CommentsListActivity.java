@@ -30,6 +30,7 @@ import com.andrewshu.android.reddit.common.util.Util;
 import com.andrewshu.android.reddit.mail.PeekEnvelopeTask;
 import com.andrewshu.android.reddit.settings.RedditSettings;
 import com.andrewshu.android.reddit.things.ThingInfo;
+import com.andrewshu.android.reddit.threads.ThreadsListActivity;
 
 public class CommentsListActivity extends ListActivity 
 		implements View.OnCreateContextMenuListener {
@@ -276,6 +277,14 @@ public class CommentsListActivity extends ListActivity
 					if (view == null) {
 						view = mInflater.inflate(R.layout.threads_list_item, null);
 					}
+					
+					ThreadsListActivity.fillThreadsListItemView(
+							position, view, item, CommentsListActivity.this, mClient, mSettings, mThumbnailOnClickListenerFactory);
+				}
+				if (item.isIs_self()) {
+					View thumbnailContainer = view.findViewById(R.id.thumbnail_view);
+					if (thumbnailContainer != null)
+						thumbnailContainer.setVisibility(View.GONE);
 				}
 			}
 		}
