@@ -290,6 +290,16 @@ public class CommentsListActivity extends ListActivity
 				
 				TextView submissionStuffView = (TextView) view.findViewById(R.id.submissionTime_submitter);
 				TextView selftextView = (TextView) view.findViewById(R.id.selftext);
+				
+				submissionStuffView.setVisibility(View.VISIBLE);
+				submissionStuffView.setText(String.format(getResources().getString(R.string.thread_time_submitter), Util.getTimeAgo(item.getCreated_utc()), item.getAuthor()));
+				
+				if (!StringUtils.isEmpty(item.getSpannedSelftext())) {
+					selftextView.setVisibility(View.VISIBLE);
+					selftextView.setText(item.getSpannedSelftext());
+				} else {
+					selftextView.setVisibility(View.GONE);
+				}
 			}
 		}
 		
