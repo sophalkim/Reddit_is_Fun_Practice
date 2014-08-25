@@ -300,6 +300,17 @@ public class CommentsListActivity extends ListActivity
 				} else {
 					selftextView.setVisibility(View.GONE);
 				}
+			} else if (isHiddenCommentDescendantPosition(position)) {
+				if (view == null) {
+					view = mInflater.inflate(R.layout.zero_size_layout, null);
+				}
+			} else if (isHiddenCommentHeadPosition(position)) {
+				if (view == null) {
+					view = mInflater.inflate(R.layout.comments_list_item_hidden, null);
+				}
+				TextView votesView = (TextView) view.findViewById(R.id.votes);
+				TextView submitterView = (TextView) view.findViewById(R.id.submitter);
+				TextView submissionTextView = (TextView) view.findViewById(R.id.submissionTime);
 			}
 		}
 		
