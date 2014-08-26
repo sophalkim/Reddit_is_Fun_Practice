@@ -311,6 +311,12 @@ public class CommentsListActivity extends ListActivity
 				TextView votesView = (TextView) view.findViewById(R.id.votes);
 				TextView submitterView = (TextView) view.findViewById(R.id.submitter);
 				TextView submissionTextView = (TextView) view.findViewById(R.id.submissionTime);
+				
+				try {
+					votesView.setText(Util.showNumPoints(item.getUps() - item.getDowns()));
+				} catch (NumberFormatException e) {
+					if (Constants.LOGGING) Log.e(TAG, "getView, hidden comment heads", e);
+				}
 			}
 		}
 		
