@@ -1,14 +1,21 @@
 package com.andrewshu.android.reddit.submit;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.client.HttpClient;
 
 import ssk.project.Practice.settings.RedditSettings;
+import ssk.project.Practice.util.StringUtils;
 import ssk.project.Practice.util.Util;
 import android.app.TabActivity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.CookieSyncManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TabHost;
@@ -70,10 +77,92 @@ public class SubmitLinkActivity2 extends TabActivity {
 				final EditText submitTextTitle = (EditText) findViewById(R.id.submit_text_title);
 				final EditText submitTextReddit = (EditText) findViewById(R.id.submit_text_reddit);
 				if (Constants.TAB_LINK.equals(tabId)) {
-					submitLinkTitle.setText(submitTextTitle.getText());
+					submitLinkTitle.setText(submitTextTitle.getText());	
+					submitLinkReddit.setText(submitTextReddit.getText());
+				} else {
+					submitTextTitle.setText(submitLinkTitle.getText());
+					submitTextReddit.setText(submitLinkReddit.getText());
 				}
 			}
 		});
+		mTabHost.setCurrentTab(0);
 		
+		if (mSettings.isLoggedIn()) {
+			start();
+		} else {
+			showDialog(Constants.DIALOG_LOGIN);
+		}
+		
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		mSettings.saveRedditPreferences(this);
+		CookieSyncManager.getInstance().stopSync();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mSettings.saveRedditPreferences(this);
+		CookieSyncManager.getInstance().stopSync();
+	}
+	
+	
+	/**
+	 * Enable the UI after user is logged in.
+	 */
+	public void start() {
+		// Intents can be external (browser share page) or from Reddit is fun.
+		String intentAction = getIntent().getAction();
+		if (Intent.ACTION_SEND.equals(intentAction)) {
+			// Share
+			Bundle extras = getIntent().getExtras();
+			if (extras != null) {
+				String url = extras.getString(Intent.EXTRA_TEXT);
+				final EditText submitLinkUrl = (EditText) findViewById(R.id.submit_link_url);
+				final EditText submitLinkReddit = (EditText) findViewById(R.id.submit_link_reddit);
+				final EditText submitTextReddit = (EditText) findViewById(R.id.submit_text_reddit);
+				submitLinkUrl.setText(url);
+				submitLinkReddit.setText("");
+				submitTextReddit.setText("");
+				mSubmitUrl = Constants.REDDIT_BASE_URL + "/submit";
+			}
+		} else {
+			String submitPath = null;
+			Uri data = getIntent().getData();
+			if (data != null && Util.isRedditUri(data))
+				submitPath = data.getPath();
+			if (submitPath == null)
+				submitPath = "/submit";
+			
+			// the URL to do HTTP POST to
+			mSubmitUrl = Util.absolutePathToURL(submitPath);
+			
+			// Put the subreddit in the text field
+			final EditText submitLinkReddit = (EditText) findViewById(R.id.submit_link_reddit);
+			final EditText submitTextReddit = (EditText) findViewById(R.id.submit_text_reddit);
+			Matcher m = SUBMIT_PATH_PATTERN.matcher(submitPath);
+			if (m.matches()) {
+				String subreddit = m.group(1);
+				if (StringUtils.isEmpty(subreddit)) {
+					submitLinkReddit.setText("");
+					submitTextReddit.setText("");
+				} else {
+					submitLinkReddit.setText(subreddit);
+					submitTextReddit.setText(subreddit);
+				}
+			}
+		}
+		
+		final Button submitLinkButton = (Button) findViewById(R.id.submit_link_button);
+		submitLinkButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (validateLinkForm()) {
+					
+				}
+			}
+		});
 	}
 }
