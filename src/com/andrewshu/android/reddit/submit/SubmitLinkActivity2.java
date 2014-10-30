@@ -160,9 +160,38 @@ public class SubmitLinkActivity2 extends TabActivity {
 		submitLinkButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (validateLinkForm()) {
-					
+					final EditText submitLinkTitle = (EditText) findViewById(R.id.submit_link_title);
+					final EditText submitLinkUrl = (EditText) findViewById(R.id.submit_link_url);
+					final EditText submitLinkReddit = (EditText) findViewById(R.id.submit_link_redi);
+					final EditText submitLinkCaptcha = (EditText) findViewByid(R.id.submit_link_captcha);
+					new SubmitLinkTask(submitLinkTitle.getText().toString(), 
+							submitLinkUrl.getText().toString(),
+							submitLinkReddit.getText().toString(),
+							Constants.SUBMIT_KIND_LINK,
+							submitLinkCaptcha.getText().toString()).execute();
+							
 				}
 			}
 		});
+		final Button submitTextButton = (Button) findViewById(R.id.submit_text_button);
+		submitTextButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (validateTextForm()) {
+					final EditText submitTextTitle = (EditText) findViewById(R.id.submit_text_title);
+					final EditText submitTextText = (EditText) findViewById(R.id.submit_text_text);
+					final EditText submitTextReddit = (EditText) findViewById(R.id.submit_text_reddit);
+					final EditText submitTextCaptcha = (EditText) findViewById(R.id.submit_text_captcha);
+					new SubmitLinkTask(submitTextTitle.getText().toString(),
+							submitTextText.getText().toString(),
+							submitTextReddit.getText().toString(),
+							Constants.SUBMIT_KIND_SELF,
+							submitTextCaptcha.getText().toString()).execute();
+				}
+			}
+		});
+		// Check the CAPTCHA
+		new MyCaptchaCheckRequiredTask().execute();
 	}
+	
+	
 }
