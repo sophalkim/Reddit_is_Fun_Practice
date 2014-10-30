@@ -5,12 +5,10 @@ import java.util.regex.Pattern;
 
 import org.apache.http.client.HttpClient;
 
-import ssk.project.Practice.settings.RedditSettings;
-import ssk.project.Practice.util.StringUtils;
-import ssk.project.Practice.util.Util;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,8 +20,14 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
 import com.andrewshu.android.reddit.R;
+import com.andrewshu.android.reddit.captcha.CaptchaCheckRequiredTask;
 import com.andrewshu.android.reddit.common.Constants;
 import com.andrewshu.android.reddit.common.RedditIsFunHttpClientFactory;
+import com.andrewshu.android.reddit.common.util.StringUtils;
+import com.andrewshu.android.reddit.common.util.Util;
+import com.andrewshu.android.reddit.login.LoginTask;
+import com.andrewshu.android.reddit.settings.RedditSettings;
+import com.andrewshu.android.reddit.things.ThingInfo;
 
 public class SubmitLinkActivity2 extends TabActivity {
 
@@ -162,8 +166,8 @@ public class SubmitLinkActivity2 extends TabActivity {
 				if (validateLinkForm()) {
 					final EditText submitLinkTitle = (EditText) findViewById(R.id.submit_link_title);
 					final EditText submitLinkUrl = (EditText) findViewById(R.id.submit_link_url);
-					final EditText submitLinkReddit = (EditText) findViewById(R.id.submit_link_redi);
-					final EditText submitLinkCaptcha = (EditText) findViewByid(R.id.submit_link_captcha);
+					final EditText submitLinkReddit = (EditText) findViewById(R.id.submit_link_reddit);
+					final EditText submitLinkCaptcha = (EditText) findViewById(R.id.submit_link_captcha);
 					new SubmitLinkTask(submitLinkTitle.getText().toString(), 
 							submitLinkUrl.getText().toString(),
 							submitLinkReddit.getText().toString(),
@@ -191,6 +195,62 @@ public class SubmitLinkActivity2 extends TabActivity {
 		});
 		// Check the CAPTCHA
 		new MyCaptchaCheckRequiredTask().execute();
+	}
+	
+	private void returnStatus(int status) {
+		Intent i = new Intent();
+		setResult(status, i);
+		finish();
+	}
+	
+	private class MyLoginTask extends LoginTask {
+		public MyLoginTask(String username, String password) {
+			super(username, password, mSettings, mClient, getApplicationContext());
+		}
+		
+	}
+	
+	public boolean validateTextForm() {
+		return true;
+	}
+	
+	public boolean validateLinkForm() {
+		return true;
+	}
+	
+	private class SubmitLinkTask extends AsyncTask<Void, Void, ThingInfo> {
+
+		String _mTitle, _mUrlOrText, _mSubreddit, _mKind, _mCaptcha;
+		String _mUserError = "Error creating submission. Please try again.";
+		
+		SubmitLinkTask(String title, String urlOrText, String subreddit, String kind, String captcha) {
+			_mTitle = title;
+			_mUrlOrText = urlOrText;
+			_mSubreddit = subreddit;
+			_mKind = kind;
+			_mCaptcha = captcha;
+		}
+
+
+
+		@Override
+		protected ThingInfo doInBackground(Void... arg0) {
+			return null;
+		}
+		
+	}
+	
+	private class MyCaptchaCheckRequiredTask extends CaptchaCheckRequiredTask {
+
+		public MyCaptchaCheckRequiredTask() {
+			super(mSubmitUrl, mClient);
+		}
+
+		@Override
+		protected void saveState() {
+			
+		}
+		
 	}
 	
 	
